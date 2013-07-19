@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="MegaModelTransportWS" targetNamespace="http://api.webservice.megamodel.matterhorn.com/" xmlns:ns1="http://api.webservice.megamodel.matterhorn.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://jaxb.dev.java.net/array" version="1.0">
+<xs:complexType final="#all" name="stringArray">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://api.webservice.megamodel.matterhorn.com/" elementFormDefault="unqualified" targetNamespace="http://api.webservice.megamodel.matterhorn.com/" version="1.0">
+<xs:element name="CompanyTO" type="tns:companyTO"/>
+<xs:element name="DataItemsCollection" type="tns:dataItemsCollection"/>
+<xs:element name="DataObjectsCollection" type="tns:dataObjectsCollection"/>
+<xs:element name="FieldComments" type="tns:fieldComments"/>
+<xs:element name="FinancialItemDefinitionCollection" type="tns:financialItemDefinitionCollection"/>
+<xs:element name="LoginPing" type="tns:LoginPing"/>
+<xs:element name="LoginPingResponse" type="tns:LoginPingResponse"/>
+<xs:element name="MainDataSetTO" type="tns:mainDataSetTO"/>
+<xs:element name="UploadCargo" type="tns:uploadCargo"/>
+<xs:element name="UploadResp" type="tns:uploadResp"/>
+<xs:element name="countDataItems" type="tns:countDataItems"/>
+<xs:element name="countDataItemsResponse" type="tns:countDataItemsResponse"/>
+<xs:element name="countDataObjects" type="tns:countDataObjects"/>
+<xs:element name="countDataObjectsResponse" type="tns:countDataObjectsResponse"/>
+<xs:element name="countFinancialItemDefinitionNotUsedInCurrentDataSet" type="tns:countFinancialItemDefinitionNotUsedInCurrentDataSet"/>
+<xs:element name="countFinancialItemDefinitionNotUsedInCurrentDataSetResponse" type="tns:countFinancialItemDefinitionNotUsedInCurrentDataSetResponse"/>
+<xs:element name="downloadDataItems" type="tns:downloadDataItems"/>
+<xs:element name="downloadDataItemsResponse" type="tns:downloadDataItemsResponse"/>
+<xs:element name="downloadDataObjects" type="tns:downloadDataObjects"/>
+<xs:element name="downloadDataObjectsResponse" type="tns:downloadDataObjectsResponse"/>
+<xs:element name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSet" type="tns:downloadFinancialItemDefinitionsNotUsedInCurrentDataSet"/>
+<xs:element name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSetResponse" type="tns:downloadFinancialItemDefinitionsNotUsedInCurrentDataSetResponse"/>
+<xs:element name="downloadMainDataSet" type="tns:downloadMainDataSet"/>
+<xs:element name="downloadMainDataSetResponse" type="tns:downloadMainDataSetResponse"/>
+<xs:element name="searchCompanies" type="tns:searchCompanies"/>
+<xs:element name="searchCompaniesResponse" type="tns:searchCompaniesResponse"/>
+<xs:element name="upload" type="tns:upload"/>
+<xs:element name="uploadResponse" type="tns:uploadResponse"/>
+<xs:complexType name="countFinancialItemDefinitionNotUsedInCurrentDataSet">
+    <xs:sequence>
+      <xs:element name="mainDataSetId" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="countFinancialItemDefinitionNotUsedInCurrentDataSetResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="upload">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cargo" type="tns:uploadCargo"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="uploadCargo">
+    <xs:sequence>
+      <xs:element name="dataSetId" type="xs:long"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="deleteDataItemIds" nillable="true" type="xs:long"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="deleteDataObjectIds" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="dataItems" type="tns:dataItemsCollection"/>
+      <xs:element minOccurs="0" name="dataObjects" type="tns:dataObjectsCollection"/>
+      <xs:element name="publishOutput" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="fromYear" type="xs:int"/>
+      <xs:element minOccurs="0" name="toYear" type="xs:int"/>
+      <xs:element minOccurs="0" name="username" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="dataItemsCollection">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="dic_SingleDataItem" type="tns:singleDataItem"/>
+        <xs:element name="dic_TimeSeriesItem" type="tns:timeSeriesItem"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="singleDataItem">
+    <xs:complexContent>
+      <xs:extension base="tns:dataItem">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="dataItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="bolValue" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="comments" type="xs:string"/>
+      <xs:element minOccurs="0" name="dataSet" type="tns:dataSet"/>
+      <xs:element minOccurs="0" name="dataType" type="tns:dataItemType"/>
+      <xs:element minOccurs="0" name="dateValue" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="dblValue" type="xs:double"/>
+      <xs:element minOccurs="0" name="definition" type="tns:financialItemDefinition"/>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="strValue" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="dataSet">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="company" type="tns:company"/>
+      <xs:element minOccurs="0" name="currency" type="tns:currency"/>
+      <xs:element minOccurs="0" name="dateOfLastHistoricalData" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="lastUpdate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="modelDefinition" type="tns:modelDefinition"/>
+      <xs:element minOccurs="0" name="preferredInterimType" type="tns:timeSeriesType"/>
+      <xs:element minOccurs="0" name="reportConsolidated" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="type" type="tns:dataSetType"/>
+      <xs:element minOccurs="0" name="units" type="xs:long"/>
+      <xs:element minOccurs="0" name="updateStaff" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="company">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fiscalYearEnd" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="isin" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="stockCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="summary" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="currency">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fxId" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="modelDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="code" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="financialItemDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="active" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="bbFieldCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="bbFieldCodeBankingModel" type="xs:string"/>
+      <xs:element minOccurs="0" name="bestCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="currencySpecific" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="dataType" type="tns:financialDataType"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="identCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="parentDefinition" type="tns:financialItemDefinition"/>
+      <xs:element minOccurs="0" name="percentage" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="priceMultipleHeading" type="xs:string"/>
+      <xs:element minOccurs="0" name="shortName" type="xs:string"/>
+      <xs:element minOccurs="0" name="useMultiplier" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="yieldHeading" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="timeSeriesItem">
+    <xs:complexContent>
+      <xs:extension base="tns:dataItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="date" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="timeSeriesType" type="tns:timeSeriesType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="dataObjectsCollection">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="doc_CapexObject" type="tns:capexObject"/>
+        <xs:element name="doc_DebtObject" type="tns:debtObject"/>
+        <xs:element name="doc_DebtRevolver" type="tns:debtRevolver"/>
+        <xs:element name="doc_EquityObject" type="tns:equityObject"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="capexObject">
+    <xs:complexContent>
+      <xs:extension base="tns:dataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="capexAddition" type="tns:objectTimeSeries"/>
+          <xs:element minOccurs="0" name="constructionInProgress" type="tns:objectTimeSeries"/>
+          <xs:element minOccurs="0" name="depreciationMethod" type="tns:capexDepreciationMethod"/>
+          <xs:element minOccurs="0" name="depreciationType" type="tns:capexDepreciationType"/>
+          <xs:element minOccurs="0" name="residualValue" type="xs:double"/>
+          <xs:element minOccurs="0" name="yearsRemaining" type="xs:double"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="dataObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="dataSet" type="tns:dataSet"/>
+      <xs:element minOccurs="0" name="definition" type="tns:financialItemDefinition"/>
+      <xs:element minOccurs="0" name="fieldComments" type="tns:fieldComments"/>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="objectTimeSeries">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="items" nillable="true" type="tns:objectTimeSeriesItem"/>
+      <xs:element minOccurs="0" name="timeSeriesType" type="tns:timeSeriesType"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="objectTimeSeriesItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="comments" type="xs:string"/>
+      <xs:element minOccurs="0" name="dataType" type="tns:dataItemType"/>
+      <xs:element minOccurs="0" name="date" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="dateValue" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="dblValue" type="xs:double"/>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="strValue" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="fieldComments">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="fieldNames" nillable="true" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="comments" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="debtObject">
+    <xs:complexContent>
+      <xs:extension base="tns:dataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="amortization" type="tns:objectTimeSeries"/>
+          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
+          <xs:element minOccurs="0" name="dateOfIssue" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="floating" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="interestRate" type="xs:double"/>
+          <xs:element minOccurs="0" name="percentageInCurrency" type="xs:double"/>
+          <xs:element minOccurs="0" name="principal" type="xs:double"/>
+          <xs:element minOccurs="0" name="sinkingFundPercent" type="xs:double"/>
+          <xs:element minOccurs="0" name="sinkingFundYears" type="xs:double"/>
+          <xs:element minOccurs="0" name="timeToMaturity" type="xs:double"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="debtRevolver">
+    <xs:complexContent>
+      <xs:extension base="tns:dataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="interestRate" type="xs:double"/>
+          <xs:element minOccurs="0" name="minimumCash" type="xs:double"/>
+          <xs:element minOccurs="0" name="revolver" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="equityObject">
+    <xs:complexContent>
+      <xs:extension base="tns:dataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="convert" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="convertibleAfterYear" type="xs:double"/>
+          <xs:element minOccurs="0" name="cupon" type="xs:double"/>
+          <xs:element minOccurs="0" name="equityType" type="tns:equityType"/>
+          <xs:element minOccurs="0" name="issueDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="maturity" type="xs:double"/>
+          <xs:element minOccurs="0" name="parValue" type="xs:double"/>
+          <xs:element minOccurs="0" name="principal" type="xs:double"/>
+          <xs:element minOccurs="0" name="retainedEarnings" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="sharePrice" type="xs:double"/>
+          <xs:element minOccurs="0" name="strike" type="xs:double"/>
+          <xs:element minOccurs="0" name="transactionType" type="tns:equityTransactionType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="uploadResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:uploadResp"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="uploadResp">
+    <xs:sequence>
+      <xs:element name="uploadSucceeded" type="xs:boolean"/>
+      <xs:element name="downloadRefreshRequired" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSet">
+    <xs:sequence>
+      <xs:element name="mainDataSetId" type="xs:long"/>
+      <xs:element minOccurs="0" name="pagination" type="tns:pagination"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="pagination">
+    <xs:sequence>
+      <xs:element name="start" type="xs:int"/>
+      <xs:element name="size" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSetResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:financialItemDefinitionCollection"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="financialItemDefinitionCollection">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="definitions" nillable="true" type="tns:financialItemDefinition"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="downloadMainDataSet">
+    <xs:sequence>
+      <xs:element name="mainDataSetId" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="downloadMainDataSetResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:dataSet"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchCompanies">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="term" type="xs:string"/>
+      <xs:element name="limit" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchCompaniesResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:companyTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="companyTO">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="bbCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="isin" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="summary" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="mainDataSets" nillable="true" type="tns:mainDataSetTO"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="mainDataSetTO">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="dataSetType" type="xs:string"/>
+      <xs:element minOccurs="0" name="primaryModelDefinitionCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="currency" type="xs:string"/>
+      <xs:element minOccurs="0" name="lastUpdateStaff" type="xs:string"/>
+      <xs:element name="units" type="xs:long"/>
+      <xs:element name="reportConsolidated" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="lastHistoricalData" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="lastUpdate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="preferredInterimType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="downloadDataObjects">
+    <xs:sequence>
+      <xs:element name="dataSetIdForObjects" type="xs:long"/>
+      <xs:element minOccurs="0" name="paginationForObjects" type="tns:pagination"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="downloadDataObjectsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:dataObjectsCollection"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="countDataObjects">
+    <xs:sequence>
+      <xs:element name="dataSetIdForObjects" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="countDataObjectsResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="LoginPing">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="LoginPingResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="countDataItems">
+    <xs:sequence>
+      <xs:element name="dataSetIdForItems" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="countDataItemsResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="downloadDataItems">
+    <xs:sequence>
+      <xs:element name="dataSetIdForItems" type="xs:long"/>
+      <xs:element minOccurs="0" name="paginationForItems" type="tns:pagination"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="downloadDataItemsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:dataItemsCollection"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="timeSeriesType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Annual"/>
+      <xs:enumeration value="SemiAnnual"/>
+      <xs:enumeration value="Quarterly"/>
+      <xs:enumeration value="Monthly"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="dataSetType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Matterhorn"/>
+      <xs:enumeration value="IBES"/>
+      <xs:enumeration value="WorldScope"/>
+      <xs:enumeration value="Bloomberg"/>
+      <xs:enumeration value="Reuters"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="dataItemType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Output"/>
+      <xs:enumeration value="Historic"/>
+      <xs:enumeration value="Projection"/>
+      <xs:enumeration value="ConcensusForecast"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="financialDataType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TypeDouble"/>
+      <xs:enumeration value="TypeDate"/>
+      <xs:enumeration value="TypeString"/>
+      <xs:enumeration value="TypeBoolean"/>
+      <xs:enumeration value="TypeDebtObject"/>
+      <xs:enumeration value="TypeDebtRevolver"/>
+      <xs:enumeration value="TypeEquity"/>
+      <xs:enumeration value="TypeCapex"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="capexDepreciationMethod">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="StraightLine"/>
+      <xs:enumeration value="SumOfYears"/>
+      <xs:enumeration value="ConstantPercentage"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="capexDepreciationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Split"/>
+      <xs:enumeration value="Full"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="equityType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EquityExistingTransaction"/>
+      <xs:enumeration value="EquityNewTransaction"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="equityTransactionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OrdinaryShares"/>
+      <xs:enumeration value="RightsIssue"/>
+      <xs:enumeration value="BonusIssue"/>
+      <xs:enumeration value="ConvertibleNotes"/>
+      <xs:enumeration value="ConvertiblePreferred"/>
+      <xs:enumeration value="Warrants"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="countFinancialItemDefinitionNotUsedInCurrentDataSetResponse">
+    <wsdl:part name="parameters" element="ns1:countFinancialItemDefinitionNotUsedInCurrentDataSetResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="countDataObjects">
+    <wsdl:part name="parameters" element="ns1:countDataObjects">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="countFinancialItemDefinitionNotUsedInCurrentDataSet">
+    <wsdl:part name="parameters" element="ns1:countFinancialItemDefinitionNotUsedInCurrentDataSet">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadDataItemsResponse">
+    <wsdl:part name="parameters" element="ns1:downloadDataItemsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="LoginPingResponse">
+    <wsdl:part name="parameters" element="ns1:LoginPingResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="LoginPing">
+    <wsdl:part name="parameters" element="ns1:LoginPing">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchCompaniesResponse">
+    <wsdl:part name="parameters" element="ns1:searchCompaniesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="countDataObjectsResponse">
+    <wsdl:part name="parameters" element="ns1:countDataObjectsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="uploadResponse">
+    <wsdl:part name="parameters" element="ns1:uploadResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadDataObjectsResponse">
+    <wsdl:part name="parameters" element="ns1:downloadDataObjectsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadMainDataSetResponse">
+    <wsdl:part name="parameters" element="ns1:downloadMainDataSetResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadDataItems">
+    <wsdl:part name="parameters" element="ns1:downloadDataItems">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSet">
+    <wsdl:part name="parameters" element="ns1:downloadFinancialItemDefinitionsNotUsedInCurrentDataSet">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="countDataItemsResponse">
+    <wsdl:part name="parameters" element="ns1:countDataItemsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSetResponse">
+    <wsdl:part name="parameters" element="ns1:downloadFinancialItemDefinitionsNotUsedInCurrentDataSetResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchCompanies">
+    <wsdl:part name="parameters" element="ns1:searchCompanies">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="countDataItems">
+    <wsdl:part name="parameters" element="ns1:countDataItems">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadMainDataSet">
+    <wsdl:part name="parameters" element="ns1:downloadMainDataSet">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="upload">
+    <wsdl:part name="parameters" element="ns1:upload">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadDataObjects">
+    <wsdl:part name="parameters" element="ns1:downloadDataObjects">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="MegaModelTransportWS">
+    <wsdl:operation name="countFinancialItemDefinitionNotUsedInCurrentDataSet">
+      <wsdl:input name="countFinancialItemDefinitionNotUsedInCurrentDataSet" message="ns1:countFinancialItemDefinitionNotUsedInCurrentDataSet">
+    </wsdl:input>
+      <wsdl:output name="countFinancialItemDefinitionNotUsedInCurrentDataSetResponse" message="ns1:countFinancialItemDefinitionNotUsedInCurrentDataSetResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="upload">
+      <wsdl:input name="upload" message="ns1:upload">
+    </wsdl:input>
+      <wsdl:output name="uploadResponse" message="ns1:uploadResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSet">
+      <wsdl:input name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSet" message="ns1:downloadFinancialItemDefinitionsNotUsedInCurrentDataSet">
+    </wsdl:input>
+      <wsdl:output name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSetResponse" message="ns1:downloadFinancialItemDefinitionsNotUsedInCurrentDataSetResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadMainDataSet">
+      <wsdl:input name="downloadMainDataSet" message="ns1:downloadMainDataSet">
+    </wsdl:input>
+      <wsdl:output name="downloadMainDataSetResponse" message="ns1:downloadMainDataSetResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchCompanies">
+      <wsdl:input name="searchCompanies" message="ns1:searchCompanies">
+    </wsdl:input>
+      <wsdl:output name="searchCompaniesResponse" message="ns1:searchCompaniesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadDataObjects">
+      <wsdl:input name="downloadDataObjects" message="ns1:downloadDataObjects">
+    </wsdl:input>
+      <wsdl:output name="downloadDataObjectsResponse" message="ns1:downloadDataObjectsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countDataObjects">
+      <wsdl:input name="countDataObjects" message="ns1:countDataObjects">
+    </wsdl:input>
+      <wsdl:output name="countDataObjectsResponse" message="ns1:countDataObjectsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginPing">
+      <wsdl:input name="LoginPing" message="ns1:LoginPing">
+    </wsdl:input>
+      <wsdl:output name="LoginPingResponse" message="ns1:LoginPingResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countDataItems">
+      <wsdl:input name="countDataItems" message="ns1:countDataItems">
+    </wsdl:input>
+      <wsdl:output name="countDataItemsResponse" message="ns1:countDataItemsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadDataItems">
+      <wsdl:input name="downloadDataItems" message="ns1:downloadDataItems">
+    </wsdl:input>
+      <wsdl:output name="downloadDataItemsResponse" message="ns1:downloadDataItemsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

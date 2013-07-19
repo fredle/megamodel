@@ -1,0 +1,164 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.matterhorn</groupId>
+		<artifactId>com.matterhorn.megamodel</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>com.matterhorn.megamodel.webservice</artifactId>
+	<name>com.matterhorn.megamodel.webservice</name>
+	<description>megamodel webservice layer</description>
+	<packaging>bundle</packaging>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit-dep</artifactId>
+			<version>4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5-rc1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.scr.annotations</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>4.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.matterhorn</groupId>
+			<artifactId>com.matterhorn.megamodel.domain</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>com.matterhorn</groupId>
+			<artifactId>com.matterhorn.megamodel.service</artifactId>
+			<version>${project.version}</version>
+			<type>bundle</type>
+		</dependency>
+
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-scr-plugin</artifactId>
+				<version>1.9.0</version>
+			</plugin>
+
+
+
+			<!-- Below plugin provides a separate JAR for the JAX-WS artifacts (i.e., 
+				the objects created by running wsdl2java or wsimport), as this JAR will also 
+				be used by the SOAP client. More info: http://maven.apache.org/plugins/maven-assembly-plugin/ -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/assembly/jaxws-jar.xml</descriptor>
+					</descriptors>
+					<appendAssemblyId>true</appendAssemblyId>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Export-Package>com.matterhorn.megamodel.megamodel.*</Export-Package>
+						<Import-Packages></Import-Packages>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>megamodel</finalName>
+	</build>
+
+
+	<profiles>
+		<profile>
+			<id>CXF</id>
+			<!-- To use Metro by default, move activation element to its profile below -->
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-java2ws-plugin</artifactId>
+						<version>${cxf.version}</version>
+						<executions>
+							<execution>
+								<id>process-classes</id>
+								<phase>process-classes</phase>
+								<configuration>
+									<className>com.matterhorn.megamodel.webservice.imp.MegaModelTransportWSBean</className>
+									<genWsdl>true</genWsdl>
+									<verbose>true</verbose>
+								</configuration>
+								<goals>
+									<goal>java2ws</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+<!-- 		<profile> -->
+<!-- 			<id>Metro</id> -->
+<!-- 			<build> -->
+<!-- 				<plugins> -->
+<!-- 					<plugin> -->
+<!-- 						<groupId>org.jvnet.jax-ws-commons</groupId> -->
+<!-- 						<artifactId>jaxws-maven-plugin</artifactId> -->
+<!-- 						<version>2.2.1</version> -->
+<!-- 						<executions> -->
+<!-- 							<execution> -->
+<!-- 								<goals> -->
+<!-- 									<goal>wsgen</goal> -->
+<!-- 								</goals> -->
+<!-- 								<configuration> -->
+<!-- 									<sei>com.matterhorn.megamodel.webservice.imp.MegaModelTransportWSBean</sei> -->
+<!-- 									<genWsdl>true</genWsdl> -->
+<!-- 									<keep>true</keep> -->
+<!-- 								</configuration> -->
+<!-- 							</execution> -->
+<!-- 						</executions> -->
+<!-- 					</plugin> -->
+<!-- 				</plugins> -->
+<!-- 			</build> -->
+<!-- 		</profile> -->
+	</profiles>
+</project>

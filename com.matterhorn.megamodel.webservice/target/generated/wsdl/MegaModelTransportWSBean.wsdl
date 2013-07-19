@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="MegaModelService" targetNamespace="http://megamodel.matterhorninvestment.com/megamodel" xmlns:ns1="http://api.webservice.megamodel.matterhorn.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://megamodel.matterhorninvestment.com/megamodel" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:import namespace="http://api.webservice.megamodel.matterhorn.com/" location="MegaModelTransportWS.wsdl">
+    </wsdl:import>
+  <wsdl:binding name="MegaModelServiceSoapBinding" type="ns1:MegaModelTransportWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="countFinancialItemDefinitionNotUsedInCurrentDataSet">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="countFinancialItemDefinitionNotUsedInCurrentDataSet">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="countFinancialItemDefinitionNotUsedInCurrentDataSetResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSet">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSet">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="downloadFinancialItemDefinitionsNotUsedInCurrentDataSetResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="upload">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="upload">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="uploadResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadMainDataSet">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="downloadMainDataSet">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="downloadMainDataSetResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadDataObjects">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="downloadDataObjects">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="downloadDataObjectsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchCompanies">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchCompanies">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchCompaniesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countDataObjects">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="countDataObjects">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="countDataObjectsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginPing">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="LoginPing">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="LoginPingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countDataItems">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="countDataItems">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="countDataItemsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadDataItems">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="downloadDataItems">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="downloadDataItemsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MegaModelService">
+    <wsdl:port name="MegaModelPort" binding="tns:MegaModelServiceSoapBinding">
+      <soap:address location="http://localhost:9090/MegaModelPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

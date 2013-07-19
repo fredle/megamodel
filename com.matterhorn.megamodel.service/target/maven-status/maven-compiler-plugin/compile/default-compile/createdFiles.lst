@@ -1,0 +1,12 @@
+com\matterhorn\megamodel\service\api\MergeUtil.class
+com\matterhorn\megamodel\service\imp\MegaModelUploadServiceBean.class
+com\matterhorn\megamodel\service\imp\MegaModelDownloadServiceBean.class
+com\matterhorn\megamodel\service\api\MegaModelLocal.class
+com\matterhorn\megamodel\service\imp\MegaModelDaoImp.class
+com\matterhorn\megamodel\service\api\MegaModelUploadService.class
+com\matterhorn\megamodel\service\api\MegaModelRemote.class
+com\matterhorn\megamodel\service\api\DatasetDownloadException.class
+com\matterhorn\megamodel\service\api\MegaModelDao.class
+com\matterhorn\megamodel\service\api\ListMap2D.class
+com\matterhorn\megamodel\service\api\MegaModelDownloadService.class
+com\matterhorn\megamodel\service\imp\QueryPagination.class

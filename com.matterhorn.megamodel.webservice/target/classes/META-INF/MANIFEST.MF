@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1374153501298
+Build-Jdk: 1.7.0_25
+Built-By: freddie
+Bundle-Description: megamodel webservice layer
+Bundle-ManifestVersion: 2
+Bundle-Name: com.matterhorn.megamodel.webservice
+Bundle-SymbolicName: com.matterhorn.megamodel.webservice
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Import-Package: com.matterhorn.megamodel.domain;version="[1.0,2)",com.ma
+ tterhorn.megamodel.domain.transport;version="[1.0,2)",com.matterhorn.me
+ gamodel.service.api;version="[1.0,2)",javax.annotation,javax.jws,javax.
+ xml.ws,javax.xml.ws.handler,org.osgi.framework;version="[1.6,2)",org.os
+ gi.service.blueprint;version="[1.0.0,2.0.0)"
+Tool: Bnd-1.50.0

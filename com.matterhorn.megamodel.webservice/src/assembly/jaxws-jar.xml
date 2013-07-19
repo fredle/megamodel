@@ -1,0 +1,13 @@
+<assembly>
+   <id>jaxws</id>
+   <formats>
+      <format>jar</format>
+   </formats>
+   <includeBaseDirectory>false</includeBaseDirectory>
+   <files>
+      <file>
+         <source>target/classes/com/matterhorn/megamodel/webservice/api/MegaModelTransportWS.class</source>
+         <outputDirectory>/com/matterhorn/megamodel/webservice/api</outputDirectory>
+      </file>
+   </files>
+</assembly>

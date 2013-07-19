@@ -1,0 +1,3 @@
+com\matterhorn\megamodel\webservice\api\MegaModelTransportWS.class
+com\matterhorn\megamodel\webservice\imp\MegaModelTransportWSBean.class
+com\matterhorn\megamodel\webservice\api\WsContextLogTracer.class

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="com.matterhorn.search-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+
+	<repository>mvn:org.apache.cxf.karaf/apache-cxf/2.7.4/xml/features</repository>
+
+	<feature name="mim-megamodel" version="${project.version}">
+		<feature version="2.7.4">cxf-jaxws</feature>
+
+		<feature version="${version.eclipselink}">eclipselink</feature>
+		<bundle start-level="80">mvn:com.matterhorn/com.matterhorn.megamodel.domain/${project.version}</bundle>
+		<bundle start-level="80">mvn:com.matterhorn/com.matterhorn.megamodel.service/${project.version}</bundle>
+		<bundle start-level="80">mvn:com.matterhorn/com.matterhorn.megamodel.webservice/${project.version}</bundle>
+	</feature>
+
+	<feature name="eclipselink" version="${version.eclipselink}">
+		<bundle start-level="55">mvn:org.eclipse.persistence/javax.persistence/${version.javax.persistence}</bundle>
+		<bundle start-level="55">mvn:org.eclipse.persistence/org.eclipse.persistence.core/${version.eclipselink}</bundle>
+
+		<bundle start-level="55">wrap:mvn:org.eclipse.persistence/org.eclipse.persistence.asm/${version.eclipselink.asm}</bundle>
+		<bundle start-level="55">wrap:mvn:org.eclipse.persistence/org.eclipse.persistence.antlr/${version.eclipselink.antlr}</bundle>
+
+		<bundle start-level="55">mvn:org.eclipse.persistence/org.eclipse.persistence.jpa.jpql/${version.eclipselink}</bundle>
+
+		<bundle start-level="55">mvn:org.eclipse.persistence/org.eclipse.persistence.jpa/${version.eclipselink}</bundle>
+		<bundle start-level="55">mvn:org.eclipse.persistence/org.eclipse.persistence.osgi/${version.eclipselink}</bundle>
+		<bundle start-level="55">wrap:mvn:postgresql/postgresql/${version.postgres}</bundle>
+
+	</feature>
+
+
+
+</features>
