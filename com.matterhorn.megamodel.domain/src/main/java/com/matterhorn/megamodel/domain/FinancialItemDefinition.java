@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.matterhorn.megamodel.entities.enums.FinancialDataType;
+import com.matterhorn.megamodel.domain.enums.FinancialDataType;
 
 @Entity
 public class FinancialItemDefinition {
@@ -37,10 +37,16 @@ public class FinancialItemDefinition {
 	
 	@Override
 	public String toString() {
-		if(getIdentCode()!=null){
-			return "{IdentCode:" + getIdentCode() + "}";
+		String str = "{";
+		if(getId()!=null){
+			str+= "ID:" + getId();
 		}
-		return super.toString();
+		if(getIdentCode()!=null){
+			str+= ";IdentCode:" + getIdentCode();
+		}
+		str+="}";
+		
+		return str;
 	}
 	
 	

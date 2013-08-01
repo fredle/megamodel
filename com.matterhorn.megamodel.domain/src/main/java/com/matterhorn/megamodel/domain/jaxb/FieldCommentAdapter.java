@@ -2,8 +2,6 @@ package com.matterhorn.megamodel.domain.jaxb;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.matterhorn.megamodel.domain.transport.FieldComments;
-
 public class FieldCommentAdapter extends XmlAdapter<FieldComments, String[][]> {
 
 	@Override

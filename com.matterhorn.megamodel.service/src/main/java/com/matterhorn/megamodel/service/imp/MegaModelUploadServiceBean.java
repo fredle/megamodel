@@ -4,8 +4,9 @@ import static javax.persistence.Persistence.createEntityManagerFactory;
 import static org.apache.felix.scr.annotations.ReferenceCardinality.MANDATORY_UNARY;
 import static org.apache.felix.scr.annotations.ReferencePolicy.DYNAMIC;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,24 +24,17 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 
-import com.matterhorn.megamodel.domain.CapexObject;
+import com.matterhorn.megamodel.api.MegaModelDao;
+import com.matterhorn.megamodel.api.MegaModelUploadService;
+import com.matterhorn.megamodel.api.transport.UploadCargo;
+import com.matterhorn.megamodel.api.transport.UploadResp;
 import com.matterhorn.megamodel.domain.DataItem;
-import com.matterhorn.megamodel.domain.DataObject;
 import com.matterhorn.megamodel.domain.DataSet;
-import com.matterhorn.megamodel.domain.DebtObject;
-import com.matterhorn.megamodel.domain.DebtRevolver;
-import com.matterhorn.megamodel.domain.EquityObject;
-import com.matterhorn.megamodel.domain.ObjectTimeSeries;
-import com.matterhorn.megamodel.domain.ObjectTimeSeriesItem;
 import com.matterhorn.megamodel.domain.PersistenceConstants;
+import com.matterhorn.megamodel.domain.SingleDataItem;
 import com.matterhorn.megamodel.domain.TimeSeriesItem;
-import com.matterhorn.megamodel.domain.transport.UploadCargo;
-import com.matterhorn.megamodel.domain.transport.UploadResp;
-import com.matterhorn.megamodel.entities.enums.DataItemKey;
-import com.matterhorn.megamodel.entities.enums.DataItemType;
-import com.matterhorn.megamodel.entities.enums.DataObjectKey;
-import com.matterhorn.megamodel.service.api.MegaModelDao;
-import com.matterhorn.megamodel.service.api.MegaModelUploadService;
+import com.matterhorn.megamodel.domain.enums.DataItemKey;
+import com.matterhorn.megamodel.domain.enums.DataSetType;
 
 
 @Service
@@ -73,151 +67,90 @@ public class MegaModelUploadServiceBean implements MegaModelUploadService {
 
 		DataSet mds = em.find(DataSet.class, cargo.dataSetId);
 		
-		if (cargo.publishOutput) {
-			List<DataItem> data = cargo.dataItems.getDataItemArrayAsList();
-			if(data.isEmpty()) {
-				throw new IllegalStateException("Cannot publish DataItems, as DataItem list is empty");
-			}
-		}
-		Collection<DataObject> objectsToRemove = Collections.emptyList();
-
-		processObjectsToRemove(objectsToRemove);
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		boolean downloadRefreshRequired = persistCargoDataItems(cargo, mds);
-		downloadRefreshRequired |= persistCargoDataObjects(cargo, mds);
 
 		LOG.info("commiting");
 		tx.commit();
+		
+		
+		if (cargo.publishOutput) {
+			createPublishedDataSet(mds, cargo.fromYear, cargo.toYear);
+		}
+
+
+		
 		LOG.info("... upload() completed, download for refresh " + ((downloadRefreshRequired) ? "IS" : "NOT") + " required");
 		return new UploadResp(downloadRefreshRequired);
 
 	}
 
 
-	private boolean persistCargoDataObjects(UploadCargo cargo, DataSet mds)
-	{
-		boolean newlyPersisted = false;
-		DataObject[] dataObjects = cargo.dataObjects.getDataObjectArray();
-		if(dataObjects == null) {
-			return newlyPersisted;
-		}
-		Map<Long, DataObject> dbDataObjects = loadExisting(dataObjects);
+	private void createPublishedDataSet(DataSet mds, Integer fromYear,
+			Integer toYear) {
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
 
+		DataSet pds = new DataSet();
+		pds.setType(DataSetType.MatterhornPublished);
+		pds.setCompany(mds.getCompany());
+		pds.setCurrency(mds.getCurrency());
+		pds.setDateOfLastHistoricalData(mds.getDateOfLastHistoricalData());
+		pds.setLastUpdate(new Timestamp(new Date().getTime()));
+		pds.setModelDefinition(mds.getModelDefinition());
+		pds.setPreferredInterimType(mds.getPreferredInterimType());
+		pds.setReportConsolidated(mds.getReportConsolidated());
+		pds.setUnits(mds.getUnits());
+		pds.setUpdateStaff(mds.getUpdateStaff());
+		em.persist(pds);
 		
-		Map<DataObjectKey, DataObject> dbDataObjectsByUniqueKey = new HashMap<DataObjectKey, DataObject>();
-		
-		List<DataObject> dsDataObjects = megaModelDao.getDataObjects(mds);
+		for(DataItem di : megaModelDao.getDataItems(mds)){
+			if(di instanceof TimeSeriesItem){
+				Calendar ca = Calendar.getInstance();
+				if(((TimeSeriesItem) di).getDate()!=null){
+					ca.setTime(((TimeSeriesItem) di).getDate());
+					int year = ca.get(Calendar.YEAR);
+					if(fromYear <= year && year <=toYear){
+						em.persist(copyDataItem(di, pds));
+					}
+				} else {
+					LOG.info("Timeseriesitem without date");
+				}
+			} else {
+				em.persist(copyDataItem(di, pds));
+			}
 
-		for(DataObject dataObject : dsDataObjects){
-			dbDataObjectsByUniqueKey.put(new DataObjectKey(mds, dataObject.getDefinition()), dataObject);
 		}
+		mds.getCompany().setPublishedDataSet(pds);
+		tx.commit();
 		
-		
-		
-		
-		for(DataObject dob : dataObjects) {
-			LOG.info("dob.id: " + dob.getId());
-			Class<? extends DataObject> clazz = dob.getClass();
-			if(dob.getId() != null) {
-				DataObject existing = dbDataObjects.get(dob.getId());
-				existing.setFieldComments(dob.getFieldComments());
-				existing.setName(dob.getName());
-				
-				if(DebtObject.class.isAssignableFrom(clazz)) {
-					merge((DebtObject) dob, (DebtObject) existing, em);
-				} else if(CapexObject.class.isAssignableFrom(clazz)) {
-					merge((CapexObject) dob, (CapexObject) existing, em);
-				} else if(EquityObject.class.isAssignableFrom(clazz)) {
-					merge((EquityObject) dob, (EquityObject) existing);
-				} else if(DebtRevolver.class.isAssignableFrom(clazz)) {
-					merge((DebtRevolver) dob, (DebtRevolver) existing);
-				} else {
-					String msg  = "A developer has added a new 'type' somewhere (subclass of " + DataObject.class.getCanonicalName()
-						+ ") and hasn't checked a myriad of places for the potental ramificiations. Please report this (stupid) fatal error immediately";
-					LOG.info(msg);
-					throw new RuntimeException(new IllegalStateException(msg));
-				}
-				existing = em.merge(existing);
-				
-			} else if(dbDataObjectsByUniqueKey.get(new DataObjectKey(mds,dob.getDefinition()))!=null) {
-				//try to avoid constraint errors...
-				DataObject existing = dbDataObjectsByUniqueKey.get(new DataObjectKey(mds,dob.getDefinition()));
-				existing.setFieldComments(dob.getFieldComments());
-				existing.setName(dob.getName());
-				
-				if(DebtObject.class.isAssignableFrom(clazz)) {
-					merge((DebtObject) dob, (DebtObject) existing, em);
-				} else if(CapexObject.class.isAssignableFrom(clazz)) {
-					merge((CapexObject) dob, (CapexObject) existing, em);
-				} else if(EquityObject.class.isAssignableFrom(clazz)) {
-					merge((EquityObject) dob, (EquityObject) existing);
-				} else if(DebtRevolver.class.isAssignableFrom(clazz)) {
-					merge((DebtRevolver) dob, (DebtRevolver) existing);
-				} else {
-					String msg  = "A developer has added a new 'type' somewhere (subclass of " + DataObject.class.getCanonicalName() + ")";
-					LOG.info(msg);
-					throw new RuntimeException(new IllegalStateException(msg));
-				}
-				existing = em.merge(existing);
-				LOG.info(existing.toString());
-			} else {
-				dob.setDefinition(em.merge(dob.getDefinition()));
-				dob.setDataSet(mds);
-				
-				if(DebtObject.class.isAssignableFrom(clazz)) {
-					DebtObject deb = (DebtObject) dob;
-//					associateObjectTimeSeriesItems(deb.getAmortization());
-				} else if(CapexObject.class.isAssignableFrom(clazz)) {
-					CapexObject cap = (CapexObject) dob;
-//					associateObjectTimeSeriesItems(cap.getCapexAddition());
-//					associateObjectTimeSeriesItems(cap.getConstructionInProgress());
-				}				
-				em.persist(dob);
-				newlyPersisted = true;
-				
-			}
-			
-			
-			if(dob.getId() == null) {
-			} else {
-			}
-		}
-		return newlyPersisted;
 	}
-
 	
-//	private void associateObjectTimeSeriesItems(ObjectTimeSeries series)
-//	{
-//		if(series != null) {
-//			for(ObjectTimeSeriesItem item : series.getItems()) {
-//				item.setTimeSeries(series);
-//			}
-//		}
-//	}
+	DataItem copyDataItem(DataItem oldDi,DataSet newDs){
+		DataItem newDi;
 
-
-	private Map<Long, DataObject> loadExisting(DataObject[] dataObjects)
-	{
-		Set<Long> ids = new HashSet<Long>(dataObjects.length);
-		for(DataObject dataObject : dataObjects) {
-			if(dataObject.getId() != null) {
-				ids.add(dataObject.getId());
-			}
+		if(oldDi instanceof TimeSeriesItem){
+			newDi = new TimeSeriesItem();
+			((TimeSeriesItem)newDi).setDate(((TimeSeriesItem) oldDi).getDate());
+			((TimeSeriesItem)newDi).setTimeSeriesType(((TimeSeriesItem) oldDi).getTimeSeriesType());
+		} else {
+			newDi = new SingleDataItem();
 		}
-		Map<Long, DataObject> dbDataObjects = Collections.emptyMap();
-		if(!ids.isEmpty()) {
-			String query = "SELECT o.id, o FROM " + DataObject.class.getSimpleName() + " o WHERE o.id IN :ids";
-			@SuppressWarnings("unchecked")
-			List<Object[]> rows = em.createQuery(query).setParameter("ids", ids).getResultList();
-			dbDataObjects = new HashMap<Long, DataObject>(rows.size());
-			for(Object[] row : rows) {
-				dbDataObjects.put((Long)row[0], (DataObject)row[1]);
-			}
-		}
-		return dbDataObjects;
+		
+		newDi.setDataSet(newDs);
+		
+		newDi.setBolValue(oldDi.getBolValue());
+		newDi.setComments(oldDi.getComments());
+		newDi.setDataType(oldDi.getDataType());
+		newDi.setDateValue(oldDi.getDateValue());
+		newDi.setDblValue(oldDi.getDblValue());
+		newDi.setDefinition(oldDi.getDefinition());
+		newDi.setStrValue(oldDi.getStrValue());
+		
+		return newDi;
 	}
-
+	
 	private boolean persistCargoDataItems(UploadCargo cargo, DataSet mds)
 	{
 		boolean newlyPersisted = false;
@@ -257,14 +190,12 @@ public class MegaModelUploadServiceBean implements MegaModelUploadService {
 		}
 		
 		for(DataItem di : items) {
-			if(di.getDefinition().getIdentCode().equals("IS_00053")){
-				LOG.info(di.toString());
-			}
-			if(di.getDataType() == DataItemType.Output) {
-				continue;
-			}
+
+//			if(di.getDataType() == DataItemType.Output) {
+//				continue;
+//			}
 			//LOG.info("di.id: " + di.getId());
-			di.setDefinition(em.merge(di.getDefinition()));
+			//di.setDefinition(em.merge(di.getDefinition()));
 			di.setDataSet(mds);
 			if(di.getId() != null) {
 				DataItem old = ffs.get(di.getId());
@@ -273,7 +204,7 @@ public class MegaModelUploadServiceBean implements MegaModelUploadService {
 			} else if(oldDataItems.get(new DataItemKey(mds,di))!=null){
 				//check to avoid constraint violations.
 				DataItem old = oldDataItems.get(new DataItemKey(mds,di));
-				LOG.info("matched old dataitem: " + old.getId());
+				//LOG.info("matched old dataitem: " + old.getId());
 				merge(di, old);
 				em.merge(old);				
 			} else {
@@ -283,34 +214,5 @@ public class MegaModelUploadServiceBean implements MegaModelUploadService {
 		}
 		return newlyPersisted;
 	}
-
-	private void processObjectsToRemove(Collection<DataObject> objectsToRemove)
-	{
-		for (DataObject dataObj : objectsToRemove) {
-			// Since this could be an object of the segment
-			DataSet objDs = dataObj.getDataSet();
-			
-			if (dataObj instanceof DebtObject) {
-				DebtObject debtObj = (DebtObject) dataObj;
-				remove(debtObj.getAmortization());
-			}
-			if (dataObj instanceof CapexObject) {
-				CapexObject capex = (CapexObject) dataObj;
-				remove(capex.getCapexAddition());
-				remove(capex.getConstructionInProgress());
-			}
-			em.remove(dataObj);
-			LOG.info("Removed entity: " + dataObj);
-		}
-	}
-	
-	
-	private void remove(Object object)
-	{
-		if(object != null) {
-			em.remove(object);
-		}
-	}
-
 
 }

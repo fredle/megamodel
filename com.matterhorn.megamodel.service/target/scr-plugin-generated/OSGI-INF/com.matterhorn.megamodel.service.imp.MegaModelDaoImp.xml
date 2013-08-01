@@ -2,7 +2,7 @@
     <scr:component enabled="true" immediate="true" name="com.matterhorn.megamodel.service.imp.MegaModelDaoImp">
         <implementation class="com.matterhorn.megamodel.service.imp.MegaModelDaoImp"/>
         <service servicefactory="false">
-            <provide interface="com.matterhorn.megamodel.service.api.MegaModelDao"/>
+            <provide interface="com.matterhorn.megamodel.api.MegaModelDao"/>
         </service>
         <property name="service.pid" value="com.matterhorn.megamodel.service.imp.MegaModelDaoImp"/>
     </scr:component>

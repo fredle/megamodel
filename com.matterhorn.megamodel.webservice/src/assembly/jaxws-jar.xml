@@ -9,5 +9,9 @@
          <source>target/classes/com/matterhorn/megamodel/webservice/api/MegaModelTransportWS.class</source>
          <outputDirectory>/com/matterhorn/megamodel/webservice/api</outputDirectory>
       </file>
+      <file>
+         <source>target/classes/com/matterhorn/megamodel/webservice/api/MegaModelMistMethodsWS.class</source>
+         <outputDirectory>/com/matterhorn/megamodel/webservice/api</outputDirectory>
+      </file>
    </files>
 </assembly>

@@ -2,7 +2,7 @@ package com.matterhorn.megamodel.service.imp;
 
 import javax.persistence.Query;
 
-import com.matterhorn.megamodel.domain.transport.Pagination;
+import com.matterhorn.megamodel.api.transport.Pagination;
 
 public final class QueryPagination {
 

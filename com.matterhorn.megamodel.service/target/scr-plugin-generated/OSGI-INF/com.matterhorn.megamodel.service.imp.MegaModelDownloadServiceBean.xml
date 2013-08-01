@@ -2,7 +2,7 @@
     <scr:component enabled="true" immediate="true" name="com.matterhorn.megamodel.service.imp.MegaModelDownloadServiceBean">
         <implementation class="com.matterhorn.megamodel.service.imp.MegaModelDownloadServiceBean"/>
         <service servicefactory="false">
-            <provide interface="com.matterhorn.megamodel.service.api.MegaModelDownloadService"/>
+            <provide interface="com.matterhorn.megamodel.api.MegaModelDownloadService"/>
         </service>
         <property name="service.pid" value="com.matterhorn.megamodel.service.imp.MegaModelDownloadServiceBean"/>
     </scr:component>

@@ -5,8 +5,9 @@
 	<parent>
 		<groupId>com.matterhorn</groupId>
 		<artifactId>com.matterhorn.megamodel</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<groupId>com.matterhorn.megamodel</groupId>
 	<artifactId>com.matterhorn.megamodel.service</artifactId>
 	<name>com.matterhorn.megamodel.service</name>
 	<description>megamodel</description>
@@ -66,10 +67,27 @@
 			<version>2.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.matterhorn</groupId>
+			<groupId>com.matterhorn.megamodel</groupId>
 			<artifactId>com.matterhorn.megamodel.domain</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.matterhorn.megamodel</groupId>
+			<artifactId>com.matterhorn.megamodel.api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.karaf.shell</groupId>
+			<artifactId>org.apache.karaf.shell.console</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<!-- <dependency> -->
+		<!-- <groupId>com.matterhorn.market</groupId> -->
+		<!-- <artifactId>com.matterhorn.market.api</artifactId> -->
+		<!-- <version>0.0.3-SNAPSHOT</version> -->
+		<!-- </dependency> -->
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -90,6 +108,16 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Import-Package>
+							org.apache.felix.service.command,
+							org.apache.felix.gogo.commands,
+							org.apache.karaf.shell.console,
+							*
+						</Import-Package>
+					</instructions>
+				</configuration>
 			</plugin>
 
 		</plugins>

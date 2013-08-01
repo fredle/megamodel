@@ -20,6 +20,7 @@ public class Company {
 	private String isin;
 	private String summary;
 	private Date fiscalYearEnd;
+	private DataSet publishedDataSet;
 	
 	public Long getId() {
 		return id;
@@ -62,6 +63,13 @@ public class Company {
 
 	public void setFiscalYearEnd(Date fiscalYearEnd) {
 		this.fiscalYearEnd = fiscalYearEnd;
+	}
+	
+	public DataSet getPublishedDataSet() {
+		return publishedDataSet;
+	}
+	public void setPublishedDataSet(DataSet publishedDataSet) {
+		this.publishedDataSet = publishedDataSet;
 	}
 
 }

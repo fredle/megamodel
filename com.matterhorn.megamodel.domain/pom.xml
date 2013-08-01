@@ -5,8 +5,9 @@
 	<parent>
 		<groupId>com.matterhorn</groupId>
 		<artifactId>com.matterhorn.megamodel</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<groupId>com.matterhorn.megamodel</groupId>
 	<artifactId>com.matterhorn.megamodel.domain</artifactId>
 	<name>com.matterhorn.megamodel.domain</name>
 	<description>megamodel</description>

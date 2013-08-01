@@ -14,5 +14,10 @@
       implementor="com.matterhorn.megamodel.webservice.imp.MegaModelTransportWSBean"
       address="/megamodel">
    </jaxws:endpoint>
+   <jaxws:endpoint 
+      id="mist"
+      implementor="com.matterhorn.megamodel.webservice.imp.MegaModelMistMethodsWSBean"
+      address="/mist">
+   </jaxws:endpoint>
    
 </blueprint>

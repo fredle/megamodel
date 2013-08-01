@@ -2,22 +2,19 @@ package com.matterhorn.megamodel.domain;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.matterhorn.megamodel.domain.enums.DataSetType;
+import com.matterhorn.megamodel.domain.enums.TimeSeriesType;
 import com.matterhorn.megamodel.domain.jaxb.SqlDateAdapter;
 import com.matterhorn.megamodel.domain.jaxb.TimestampAdapter;
-import com.matterhorn.megamodel.entities.enums.DataSetType;
-import com.matterhorn.megamodel.entities.enums.TimeSeriesType;
 
 @Entity
 public class DataSet {
@@ -73,20 +70,6 @@ public class DataSet {
 		this.units = units;
 	}
 
-	
-//	public List<DataItem> getDataItems() {
-//		return dataItems;
-//	}
-//	public void setDataItems(List<DataItem> dataItems) {
-//		this.dataItems = dataItems;
-//	}
-//
-//	public List<DataObject> getDataObjects() {
-//		return dataObjects;
-//	}
-//	public void setDataObjects(List<DataObject> dataObjects) {
-//		this.dataObjects = dataObjects;
-//	}
 
 	public Boolean getReportConsolidated() {
 		return reportConsolidated;
@@ -131,7 +114,6 @@ public class DataSet {
 		this.updateStaff = updateStaff;
 	}
 
-	
 	@XmlJavaTypeAdapter(SqlDateAdapter.class)
 	public Date getDateOfLastHistoricalData() {
 		return dateOfLastHistoricalData;

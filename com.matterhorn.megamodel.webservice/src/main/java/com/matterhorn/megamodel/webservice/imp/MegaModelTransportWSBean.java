@@ -1,6 +1,6 @@
 package com.matterhorn.megamodel.webservice.imp;
 
-import static com.matterhorn.megamodel.webservice.api.WsContextLogTracer.traceWsContext;
+import static com.matterhorn.megamodel.webservice.util.WsContextLogTracer.traceWsContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,49 +10,44 @@ import javax.annotation.Resource;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceContext;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
+import com.matterhorn.megamodel.api.MegaModelDao;
+import com.matterhorn.megamodel.api.MegaModelDownloadService;
+import com.matterhorn.megamodel.api.MegaModelUploadService;
+import com.matterhorn.megamodel.api.transport.CompanyTO;
+import com.matterhorn.megamodel.api.transport.DataItemsCollection;
+import com.matterhorn.megamodel.api.transport.FinancialItemDefinitionCollection;
+import com.matterhorn.megamodel.api.transport.MainDataSetTO;
+import com.matterhorn.megamodel.api.transport.Pagination;
+import com.matterhorn.megamodel.api.transport.UploadCargo;
+import com.matterhorn.megamodel.api.transport.UploadResp;
+import com.matterhorn.megamodel.api.webservices.MegaModelTransportWS;
 import com.matterhorn.megamodel.domain.Company;
 import com.matterhorn.megamodel.domain.DataItem;
-import com.matterhorn.megamodel.domain.DataObject;
 import com.matterhorn.megamodel.domain.DataSet;
 import com.matterhorn.megamodel.domain.FinancialItemDefinition;
-import com.matterhorn.megamodel.domain.transport.CompanyTO;
-import com.matterhorn.megamodel.domain.transport.DataItemsCollection;
-import com.matterhorn.megamodel.domain.transport.DataObjectsCollection;
-import com.matterhorn.megamodel.domain.transport.FinancialItemDefinitionCollection;
-import com.matterhorn.megamodel.domain.transport.MainDataSetTO;
-import com.matterhorn.megamodel.domain.transport.Pagination;
-import com.matterhorn.megamodel.domain.transport.UploadCargo;
-import com.matterhorn.megamodel.domain.transport.UploadResp;
-import com.matterhorn.megamodel.service.api.MegaModelDao;
-import com.matterhorn.megamodel.service.api.MegaModelDownloadService;
-import com.matterhorn.megamodel.service.api.MegaModelUploadService;
-import com.matterhorn.megamodel.webservice.api.MegaModelTransportWS;
 
 @WebService(targetNamespace = "http://megamodel.matterhorninvestment.com/megamodel", 
 	portName="MegaModelPort",
 	serviceName="MegaModelService", 
-	endpointInterface="com.matterhorn.megamodel.webservice.api.MegaModelTransportWS")
+	endpointInterface="com.matterhorn.megamodel.api.webservices.MegaModelTransportWS")
 public class MegaModelTransportWSBean implements MegaModelTransportWS {
 
-	public MegaModelTransportWSBean() {
-		megaModelDao = getBundleContext().getService(getBundleContext().getServiceReference(MegaModelDao.class));
-		downloadService = getBundleContext().getService(getBundleContext().getServiceReference(MegaModelDownloadService.class));
-		uploadService = getBundleContext().getService(getBundleContext().getServiceReference(MegaModelUploadService.class));
-		Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-		LOG.info("xxxxxx" + bundle.getLocation());
-	}
-	
 	private static final Logger LOG  = Logger.getLogger(MegaModelTransportWSBean.class.getCanonicalName());
 	
 	private MegaModelDownloadService downloadService;
-
 	private MegaModelUploadService uploadService;
-	
 	private MegaModelDao megaModelDao;
+
+	public MegaModelTransportWSBean() {
+		BundleContext bundleContext = FrameworkUtil.getBundle(this.getClass()).getBundleContext();
+		megaModelDao = bundleContext.getService(bundleContext.getServiceReference(MegaModelDao.class));
+		downloadService = bundleContext.getService(bundleContext.getServiceReference(MegaModelDownloadService.class));
+		uploadService = bundleContext.getService(bundleContext.getServiceReference(MegaModelUploadService.class));
+	}
+	
 
 	@Resource 
 	WebServiceContext wsContext;
@@ -79,30 +74,9 @@ public class MegaModelTransportWSBean implements MegaModelTransportWS {
 	{
 		traceWsContext(wsContext, LOG);
 		List<DataItem> data = downloadService.downloadDataItems(dataSetId, pagination);
-		//LazyInitializationHelper.initializeDataItems(data); 
 		DataItemsCollection items = new DataItemsCollection();
 		items.setDataItemArrayFromList(data);
 		return items;
-	}
-
-
-	@Override
-	public long countDataObjects(long dataSetId)
-	{
-		traceWsContext(wsContext, LOG);
-		return downloadService.countDataObjects(dataSetId);
-	}
-
-	
-	@Override
-	public DataObjectsCollection downloadDataObjects(long dataSetId, Pagination pagination)
-	{
-		traceWsContext(wsContext, LOG);
-		List<DataObject> data = downloadService.downloadDataObjects(dataSetId, pagination);
-		//LazyInitializationHelper.initializeDataObjects(data);
-		DataObjectsCollection objects = new DataObjectsCollection();
-		objects.setDataObjectArray(data.toArray(new DataObject[data.size()]));
-		return objects;
 	}
 
 
@@ -126,9 +100,6 @@ public class MegaModelTransportWSBean implements MegaModelTransportWS {
 	}
 
 
-	private BundleContext getBundleContext() {
-		return FrameworkUtil.getBundle(this.getClass()).getBundleContext();
-	}
 
 
 

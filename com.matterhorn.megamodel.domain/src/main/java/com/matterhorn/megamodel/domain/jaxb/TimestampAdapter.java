@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * as it doesn't have a zero arg constructor.
  * Rather than refactor all occurrences we can simply use an {@link javax.xml.bind.annotation.adapters.XmlAdapter}
  * 
- * @author caspar
  */
 @XmlRootElement
 @XmlType

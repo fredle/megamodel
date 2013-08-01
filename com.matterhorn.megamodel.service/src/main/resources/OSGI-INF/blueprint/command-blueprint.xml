@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint 
+	xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	
+    <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+        <command name="megamodel/getDataItems">
+            <action class="com.matterhorn.megamodel.service.karafcommand.GetDataItems"/>
+            <completers>
+                <null/>
+            </completers>
+        </command>
+
+       
+    </command-bundle>
+
+
+<!-- Blueprint is not very good - this reference, when missing kills the entire file's wiring
+ 	<reference id="subscriptionService" interface="com.matterhorn.market.api.service.SubscriptionService" />
+-->
+
+
+<!--
+     <bean id="subscribeCompleter" class="com.matterhorn.market.karaf.command.SubscribeCompleter">
+   	    <property name="bundleContext" ref="blueprintBundleContext"/>
+    </bean>
+-->
+
+
+</blueprint>

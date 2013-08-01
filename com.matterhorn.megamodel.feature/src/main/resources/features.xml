@@ -7,9 +7,11 @@
 		<feature version="2.7.4">cxf-jaxws</feature>
 
 		<feature version="${version.eclipselink}">eclipselink</feature>
-		<bundle start-level="80">mvn:com.matterhorn/com.matterhorn.megamodel.domain/${project.version}</bundle>
-		<bundle start-level="80">mvn:com.matterhorn/com.matterhorn.megamodel.service/${project.version}</bundle>
-		<bundle start-level="80">mvn:com.matterhorn/com.matterhorn.megamodel.webservice/${project.version}</bundle>
+		
+		<bundle start-level="80">mvn:com.matterhorn.megamodel/com.matterhorn.megamodel.domain/${project.version}</bundle>
+		<bundle start-level="80">mvn:com.matterhorn.megamodel/com.matterhorn.megamodel.api/${project.version}</bundle>
+		<bundle start-level="80">mvn:com.matterhorn.megamodel/com.matterhorn.megamodel.service/${project.version}</bundle>
+		<bundle start-level="80">mvn:com.matterhorn.megamodel/com.matterhorn.megamodel.webservice/${project.version}</bundle>
 	</feature>
 
 	<feature name="eclipselink" version="${version.eclipselink}">
@@ -26,7 +28,6 @@
 		<bundle start-level="55">wrap:mvn:postgresql/postgresql/${version.postgres}</bundle>
 
 	</feature>
-
 
 
 </features>

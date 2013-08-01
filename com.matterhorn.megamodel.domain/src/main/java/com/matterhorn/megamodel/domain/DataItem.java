@@ -17,8 +17,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.matterhorn.megamodel.domain.enums.DataItemType;
 import com.matterhorn.megamodel.domain.jaxb.SqlDateAdapter;
-import com.matterhorn.megamodel.entities.enums.DataItemType;
 
 @DiscriminatorColumn(name = "type", discriminatorType = INTEGER)
 @Inheritance(strategy = SINGLE_TABLE)

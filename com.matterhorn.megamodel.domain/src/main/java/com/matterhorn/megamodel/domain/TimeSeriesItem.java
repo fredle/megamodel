@@ -7,8 +7,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.matterhorn.megamodel.domain.enums.TimeSeriesType;
 import com.matterhorn.megamodel.domain.jaxb.SqlDateAdapter;
-import com.matterhorn.megamodel.entities.enums.TimeSeriesType;
 
 @DiscriminatorValue("1")
 @Entity
@@ -44,6 +44,9 @@ public class TimeSeriesItem extends DataItem {
 		if(getDataType()!=null){
 			val +=  "dataType:"+ getDataType() + ";";
 		}
+		if(getDefinition()!=null){
+			val +=  "definition:"+ getDefinition() + ";";
+		}
 		if(getDataSet()!=null&&getDataSet().getId()!=null){
 			val +=  "ds:" + getDataSet().getId() + ";";
 		}
@@ -58,9 +61,6 @@ public class TimeSeriesItem extends DataItem {
 		}
 		if(getDateValue()!=null){
 			val +=  "DateValue:"+  sdf.format(getDateValue()) +";";
-		}
-		if(getDefinition()!=null){
-			val +=  "Definition:"+ getDefinition() +";";
 		}
 		
 		

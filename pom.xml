@@ -1,15 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.matterhorn</groupId>
+
+
+	<parent>
+		<artifactId>standard.pom</artifactId>
+		<groupId>com.matterhorn</groupId>
+		<version>2.1.0</version>
+	</parent>
+
 	<artifactId>com.matterhorn.megamodel</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<name>MegaModel WebService</name>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
 		<module>com.matterhorn.megamodel.domain</module>
+		<module>com.matterhorn.megamodel.api</module>
 		<module>com.matterhorn.megamodel.service</module>
 		<module>com.matterhorn.megamodel.webservice</module>
 		<module>com.matterhorn.megamodel.feature</module>
@@ -26,6 +32,7 @@
 		<version.eclipselink.asm>3.3.1.v201206041142</version.eclipselink.asm>
 		<version.eclipselink.antlr>3.2.0.v201206041011</version.eclipselink.antlr>
 		<version.postgres>8.4-702.jdbc4</version.postgres>
+		<version.mist>2.1.43-SNAPSHOT</version.mist>
 	</properties>
 
 	<build>

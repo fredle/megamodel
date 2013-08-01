@@ -2,7 +2,9 @@ package com.matterhorn.megamodel.service.imp;
 
 import static javax.persistence.Persistence.createEntityManagerFactory;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -12,14 +14,15 @@ import javax.persistence.Query;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import com.matterhorn.megamodel.api.MegaModelDao;
 import com.matterhorn.megamodel.domain.Company;
 import com.matterhorn.megamodel.domain.Currency;
 import com.matterhorn.megamodel.domain.DataItem;
-import com.matterhorn.megamodel.domain.DataObject;
 import com.matterhorn.megamodel.domain.DataSet;
 import com.matterhorn.megamodel.domain.PersistenceConstants;
-import com.matterhorn.megamodel.entities.enums.DataSetType;
-import com.matterhorn.megamodel.service.api.MegaModelDao;
+import com.matterhorn.megamodel.domain.TimeSeriesItem;
+import com.matterhorn.megamodel.domain.enums.DataItemType;
+import com.matterhorn.megamodel.domain.enums.DataSetType;
 
 @Service
 @Component(specVersion = "1.1", immediate = true, enabled = true)
@@ -85,13 +88,41 @@ public class MegaModelDaoImp implements MegaModelDao {
 	}
 	
 	@Override
-	public List<DataObject> getDataObjects(DataSet dataSet) {
-		Query query = em.createQuery("SELECT d FROM DataObject d WHERE d.dataSet.id = :dsid");
-		query.setParameter("dsid", dataSet.getId());
+	public List<TimeSeriesItem> getDataItems(Long dataSetId,
+			Set<String> identCodes, DataItemType dataType, Date from, Date to) {
+		
+		Query query = em.createQuery("SELECT d FROM TimeSeriesItem d WHERE d.dataSet.id = :dsid AND d.definition.identCode IN :identCodes AND d.dataType = :dataType");
+		query.setParameter("dsid", dataSetId);
+		query.setParameter("identCodes", identCodes);
+		query.setParameter("dataType", dataType);
 		
 		@SuppressWarnings("unchecked")
-		List<DataObject> dataObjects = query.getResultList();
-		return dataObjects;
+		List<TimeSeriesItem> dataItems = query.getResultList();
+		LOG.info("Got " + dataItems.size() + " DataItems for datsetid:" + dataSetId);
+		return dataItems;
 	}
+	
+	@Override
+	public DataSet getPublishedDataSet(Long companyId) {
+		
+		Query query = em.createQuery("SELECT c.publishedDataSet FROM Company c WHERE c.id = :companyId");
+		query.setParameter("companyId", companyId);
+		
+		@SuppressWarnings("unchecked")
+		DataSet dataSet = (DataSet) query.getSingleResult();
+		LOG.info("Got DataSet id:" + dataSet.getId() + "  for companyId:" + companyId);
+		return dataSet;
+	}
+	
+	
+//	@Override
+//	public List<DataObject> getDataObjects(DataSet dataSet) {
+//		Query query = em.createQuery("SELECT d FROM DataObject d WHERE d.dataSet.id = :dsid");
+//		query.setParameter("dsid", dataSet.getId());
+//		
+//		@SuppressWarnings("unchecked")
+//		List<DataObject> dataObjects = query.getResultList();
+//		return dataObjects;
+//	}
 	
 }
